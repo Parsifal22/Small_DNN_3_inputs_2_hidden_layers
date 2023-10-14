@@ -23,7 +23,6 @@ int main()
 
 
 	
-	
 
 	//Checking whether the Dataset exists or not
 	std::ifstream file("C:/Users/Nikita/Source/Repos/Small_DNN_3_inputs_2_hidden_layers/dataset.csv");
