@@ -1,6 +1,6 @@
 #include "../headers/top_file.h"
 
-void normalization_2d(int(*input_data)[3], double(*output_data)[3])
+void normalization_2d(int **input_data, double **output_data)
 {
     int max;
     int min;
@@ -15,7 +15,7 @@ void normalization_2d(int(*input_data)[3], double(*output_data)[3])
     }
 }
 
-int find_max(int (*input_data)[3], int j)
+int find_max(int ** input_data, int j)
 {
     int max = -9999999;
     for(int i=0; i < SIZE_DATASET; i++)
@@ -30,7 +30,7 @@ int find_max(int (*input_data)[3], int j)
 
 
 
-int find_min(int(*input_data)[3], int j)
+int find_min(int **input_data, int j)
 {
     int min = 9999999;
     for (int i = 0; i < SIZE_DATASET; i++)
