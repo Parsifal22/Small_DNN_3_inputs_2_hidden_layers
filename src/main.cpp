@@ -7,7 +7,7 @@ int main()
 
 	//Allocate memory for weights and biases
 	int**  raw_input_data = new int* [SIZE_DATASET]; for (uint32_t i = 0; i < SIZE_DATASET; i++) { raw_input_data[i] = new int[3]; }
-	int* y = new int[SIZE_DATASET];
+	double* y = new double[SIZE_DATASET];
 	double *results = new double[SIZE_DATASET];
 
 	double** converted_input_data = new double* [SIZE_DATASET]; for (uint32_t i = 0; i < SIZE_DATASET; i++) { converted_input_data[i] = new double[3]; }
@@ -55,12 +55,12 @@ int main()
 		for(int i = 0; i < 3; i++)
 		{
 			std::getline(lineStream, cell, ',');
-			raw_input_data[j][i] = (std::stoi(cell));
+			converted_input_data[j][i] = (std::stod(cell));
 
 		}
 
 		std::getline(lineStream, cell, ',');
-		y[j] = (std::stoi(cell));
+		y[j] = (std::stod(cell));
 		j++;
 		
 	}
@@ -109,9 +109,9 @@ int main()
 
 
 
-	normalization_2d(raw_input_data, converted_input_data);
+	//normalization_2d(raw_input_data, converted_input_data);
 
-	std::cout << "\033[35mNormalized data:\033[0m" << std::endl;
+	/*std::cout << "\033[35mNormalized data:\033[0m" << std::endl;
 	for(int i=0; i < SIZE_DATASET; i++)
 	{
 		for(int j=0; j < 3; j++)
@@ -119,19 +119,61 @@ int main()
 			std::cout << converted_input_data[i][j] << "\t";
 		}
 		std::cout << y[i] << std::endl;
+	}*/
+
+
+
+	for (uint32_t i = 0; i < EPOCHS; i++)
+	{
+		std::cout << "\n\n\n\033[38;5;196mThis is the epoch: " << i << "\033" <<  std::endl;
+		for(uint32_t j = 0; j < SIZE_DATASET; j++)
+		{
+			double* hidden1 = new double [NUM_OF_HID1_NODES];
+			double* hidden2 = new double[NUM_OF_HID2_NODES];
+
+			double* input_line = new double[NUM_OF_INPUTS];
+
+			for (int k = 0; k < NUM_OF_INPUTS; k++)
+			{
+				input_line[k] = converted_input_data[j][k];
+			}
+			double &result = results[j];
+			forward_propagation(input_line, result, W1, W2, W3, b1, b2, b3, hidden1, hidden2);
+
+			std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
+
+			double cost_function = pow(y[j] - results[j], 2);
+			std::cout << cost_function << std::endl;
+
+
+			double& y_1 = y[j];
+			backpropagation(y_1, input_line, result, W1, W2, W3, b1, b2, b3, hidden1, hidden2);
+
+			delete[] hidden1;
+			delete[] hidden2;
+			delete[] input_line;
+		}
+
+		//std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
+		//double sum = 0;
+		//for(int i =0; i < SIZE_DATASET; i++)
+		//{
+		//	sum += pow(y[i] - results[i], 2);
+		//}
+		//
+		//std::cout << sum/SIZE_DATASET << std::endl;
 	}
 
-	forward_propagation(converted_input_data, results, W1, W2, W3, b1, b2, b3);
 
-	std::cout << "\n\033[38;5;45mAll results:\033[0m" << std::endl;
+	/*std::cout << "\n\033[38;5;45mAll results:\033[0m" << std::endl;
 	for (int i = 0; i < SIZE_DATASET; i++)
 	{
 		std::cout << results[i] << "\t";
 	}
+	*/
 
 
-
-
+	// Deallocate memory for input and output data
 
 	for (uint32_t i = 0; i < SIZE_DATASET; i++) { delete[] raw_input_data[i]; }
 	delete[] raw_input_data;
