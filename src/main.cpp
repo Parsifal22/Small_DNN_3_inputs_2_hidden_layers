@@ -22,105 +22,69 @@ int main()
 	double *b3 = new double[NUM_OF_OUTPUTS];
 
 
-	
 
-	//Checking whether the Dataset exists or not
-	std::ifstream file("C:/Users/Nikita/Source/Repos/Small_DNN_3_inputs_2_hidden_layers/dataset.csv");
+	std::filesystem::path current_path = std::filesystem::current_path();
+	std::filesystem::path full_path = current_path.parent_path().parent_path().parent_path() / "dataset.csv";
 
-	if (!file.is_open()) 
+	if (std::filesystem::exists(full_path)) 
 	{
-		// Close the file
-		file.close();
-		create_dataset();
-		std::ifstream file("C:/Users/Nikita/Source/Repos/Small_DNN_3_inputs_2_hidden_layers/dataset.csv");
-		std::string const is_open = file.is_open() ? "File is open successfully" : "Error: file doesn't exist";
-		std::cout << is_open << std::endl;
+		std::cout << "Found file at: " << full_path << std::endl;
 	}
 	else
 	{
-		std::cout << "File is open successfully!" << std::endl;
+		std::cerr << "File not found at: " << full_path << std::endl;
+		std::cerr << "Creating file dataset.csv... " << full_path << std::endl;
+		create_dataset();
 	}
 
-	int j = 0;
 
-	// Iterate through each line and split the content using delimiter
-	std::string line = "";
+	//Read data from file dataset.csv
+	try {
+		std::ifstream file(full_path);
 
-	while (std::getline(file, line)) {
-		std::stringstream lineStream(line);
-		std::string cell;
-		int i = 0;
-
-		// Iterate through each cell and convert the value to integer
-		for(int i = 0; i < 3; i++)
-		{
-			std::getline(lineStream, cell, ',');
-			converted_input_data[j][i] = (std::stod(cell));
-
+		if (!file.is_open()) {
+			throw std::runtime_error("Error: File doesn't exist at " + full_path.string());
 		}
+		else {
+			std::cout << "File is open successfully!" << std::endl;
 
-		std::getline(lineStream, cell, ',');
-		y[j] = (std::stod(cell));
-		j++;
-		
+			int j = 0;
+
+			// Iterate through each line and split the content using delimiter
+			std::string line = "";
+
+			while (std::getline(file, line)) {
+				std::stringstream lineStream(line);
+				std::string cell;
+				int i = 0;
+
+				// Iterate through each cell and convert the value to integer
+				for(int i = 0; i < 3; i++)
+				{
+					std::getline(lineStream, cell, ',');
+					converted_input_data[j][i] = (std::stod(cell));
+
+				}
+				std::getline(lineStream, cell, ',');
+				y[j] = (std::stod(cell));
+				j++;
+				
+			}
+			// Close the file
+			file.close();
+				}
 	}
-	// Close the file
-	file.close();
+	catch (const std::exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+
 
 
 	initialize_weights(NUM_OF_INPUTS, NUM_OF_HID1_NODES, W1, b1);
-
-	std::cout << "\033[34mW1 initialized\033[0m" << std::endl;
-
-	for (uint32_t i = 0; i < NUM_OF_HID1_NODES; i++)
-	{
-		for(uint32_t j=0; j < NUM_OF_INPUTS; j++)
-		{
-			std::cout << W1[i][j] << "\t";
-		}
-		std::cout << b1[i] << std::endl;
-	}
-
 	initialize_weights(NUM_OF_HID1_NODES, NUM_OF_HID2_NODES, W2, b2);
-
-	std::cout << "\033[34mW2 initialized\033[0m" << std::endl;
-
-	for (uint32_t i = 0; i < NUM_OF_HID2_NODES; i++)
-	{
-		for (uint32_t j = 0; j < NUM_OF_HID1_NODES; j++)
-		{
-			std::cout << W2[i][j] << "\t";
-		}
-		std::cout << b2[i] << std::endl;
-	}
-
 	initialize_weights(NUM_OF_HID2_NODES, NUM_OF_OUTPUTS, W3, b3);
 
-	std::cout << "\033[34mW3 initialized\033[0m" << std::endl;
-
-	for (uint32_t i = 0; i < NUM_OF_OUTPUTS; i++)
-	{
-		for (uint32_t j = 0; j < NUM_OF_HID2_NODES; j++)
-		{
-			std::cout << W2[i][j] << "\t";
-		}
-		std::cout << b2[i] << std::endl;
-	}
-
-
-
 	//normalization_2d(raw_input_data, converted_input_data);
-
-	/*std::cout << "\033[35mNormalized data:\033[0m" << std::endl;
-	for(int i=0; i < SIZE_DATASET; i++)
-	{
-		for(int j=0; j < 3; j++)
-		{
-			std::cout << converted_input_data[i][j] << "\t";
-		}
-		std::cout << y[i] << std::endl;
-	}*/
-
 
 
 	for (uint32_t i = 0; i < EPOCHS; i++)
@@ -140,10 +104,10 @@ int main()
 			double &result = results[j];
 			forward_propagation(input_line, result, W1, W2, W3, b1, b2, b3, hidden1, hidden2);
 
-			std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
+			//std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
 
-			double cost_function = pow(y[j] - results[j], 2);
-			std::cout << cost_function << std::endl;
+			//double cost_function = pow(y[j] - results[j], 2);
+			//std::cout << cost_function << std::endl;
 
 
 			double& y_1 = y[j];
@@ -154,23 +118,17 @@ int main()
 			delete[] input_line;
 		}
 
-		//std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
-		//double sum = 0;
-		//for(int i =0; i < SIZE_DATASET; i++)
-		//{
-		//	sum += pow(y[i] - results[i], 2);
-		//}
-		//
-		//std::cout << sum/SIZE_DATASET << std::endl;
+
+		std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
+		double sum = 0;
+		for(int i =0; i < SIZE_DATASET; i++)
+		{
+			sum += pow(y[i] - results[i], 2);
+		}
+		
+		std::cout << sum/SIZE_DATASET << std::endl;
 	}
 
-
-	/*std::cout << "\n\033[38;5;45mAll results:\033[0m" << std::endl;
-	for (int i = 0; i < SIZE_DATASET; i++)
-	{
-		std::cout << results[i] << "\t";
-	}
-	*/
 
 
 	// Deallocate memory for input and output data

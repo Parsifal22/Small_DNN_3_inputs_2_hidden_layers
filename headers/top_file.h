@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <stdlib.h>
+#include <filesystem>
 
 #define SIZE_DATASET 500
 #define EPOCHS 500

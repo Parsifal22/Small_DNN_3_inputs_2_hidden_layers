@@ -3,7 +3,11 @@
 
 void create_dataset() 
 {
-	std::ofstream myfile("C:/Users/Nikita/Source/Repos/Small_DNN_3_inputs_2_hidden_layers/dataset.csv");
+
+    std::filesystem::path current_path = std::filesystem::current_path();
+    std::filesystem::path full_path = current_path.parent_path().parent_path().parent_path() / "dataset.csv";
+
+    std::ofstream myfile(full_path);
 
     if (myfile.is_open())
     {   
