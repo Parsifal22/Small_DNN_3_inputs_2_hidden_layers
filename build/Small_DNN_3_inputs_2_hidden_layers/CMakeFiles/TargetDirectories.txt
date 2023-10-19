@@ -1,5 +1,0 @@
-C:/Users/Nikita/source/repos/Small_DNN_3_inputs_2_hidden_layers/build/Small_DNN_3_inputs_2_hidden_layers/CMakeFiles/edit_cache.dir
-C:/Users/Nikita/source/repos/Small_DNN_3_inputs_2_hidden_layers/build/Small_DNN_3_inputs_2_hidden_layers/CMakeFiles/rebuild_cache.dir
-C:/Users/Nikita/source/repos/Small_DNN_3_inputs_2_hidden_layers/build/Small_DNN_3_inputs_2_hidden_layers/src/CMakeFiles/edit_cache.dir
-C:/Users/Nikita/source/repos/Small_DNN_3_inputs_2_hidden_layers/build/Small_DNN_3_inputs_2_hidden_layers/src/CMakeFiles/main.dir
-C:/Users/Nikita/source/repos/Small_DNN_3_inputs_2_hidden_layers/build/Small_DNN_3_inputs_2_hidden_layers/src/CMakeFiles/rebuild_cache.dir
