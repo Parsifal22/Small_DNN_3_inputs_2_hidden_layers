@@ -10,7 +10,7 @@ void normalization_2d(int **input_data, double **output_data)
 
         for (int j = 0; j < SIZE_DATASET; j++) {
 
-            output_data[j][i] = (double) abs(input_data[j][i]) / (max - min);
+            output_data[j][i] = ((double) input_data[j][i]-min) / (max - min);
         }
     }
 }

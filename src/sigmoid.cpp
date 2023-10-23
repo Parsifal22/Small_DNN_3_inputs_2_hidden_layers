@@ -7,5 +7,6 @@ double sigmoid(double x) {
 
 // Derivative of sigmoid function
 double sigmoid_derivative(double x) {
-    return x * (1.0 - x);
+    double sig_x = sigmoid(x);
+    return sig_x * (1.0 - sig_x);
 }

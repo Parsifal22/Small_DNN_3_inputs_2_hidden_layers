@@ -9,11 +9,16 @@ where fan_in is the number of input nodes https://machinelearningmastery.com/wei
 // He Initialization
 void initialize_weights(int INPUT, int OUTPUT, double **w, double *b) {
 
-    double limit = sqrt(2.0 / INPUT);
+    // Seed the random number generator
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    for (uint32_t i = 0; i < OUTPUT; i++) {
-        for (uint32_t j = 0; j < INPUT; j++) {
-            w[i][j] = (double)rand() / RAND_MAX * 2 * limit - limit;
+    // Calculate the He initialization factor
+    double scale = std::sqrt(2.0 / INPUT);
+
+    for (int i = 0; i < OUTPUT; i++) {
+        for (int j = 0; j < INPUT; j++) {
+            // Generate a random weight value with mean 0 and standard deviation 'scale'
+            w[i][j] = scale * (static_cast<double>(std::rand()) / RAND_MAX);
         }
         b[i] = 0;
     }

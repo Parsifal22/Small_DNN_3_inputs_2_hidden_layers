@@ -14,12 +14,6 @@ void forward_propagation(double* input, double &output, double** W1, double** W2
         hidden1[i] = relu(hidden1[i]);
     }
 
-	/*std::cout << "\033[38;5;68mFirst Hidden Layer:\033[0m" << std::endl;
-	for (int i = 0; i < NUM_OF_HID1_NODES; i++) {
-
-		std::cout << hidden1[i] << "\t";
-
-	}*/
 
     // Hidden layer 2
     for (int i = 0; i < NUM_OF_HID2_NODES; i++) {
@@ -31,13 +25,6 @@ void forward_propagation(double* input, double &output, double** W1, double** W2
         hidden2[i] = relu(hidden2[i]);
     }
 
-	/*std::cout << "\n\033[38;5;100mSecond Hidden Layer:\033[0m" << std::endl;
-	for (int i = 0; i < NUM_OF_HID2_NODES; i++) {
-
-		std::cout << hidden2[i] << "\t";
-
-	}*/
-
 
     // Output layer
     for (int i = 0; i < NUM_OF_OUTPUTS; i++) {
@@ -48,9 +35,6 @@ void forward_propagation(double* input, double &output, double** W1, double** W2
         output += b3[i];
         output = sigmoid(output);
     }
-	/*std::cout << "\n\033[38;5;103mOutput\033[0m" << std::endl;
-
-    std::cout << output << std::endl;*/
 
 
 

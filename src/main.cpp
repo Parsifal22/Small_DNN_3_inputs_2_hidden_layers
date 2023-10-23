@@ -5,7 +5,7 @@ int main()
 {
 
 
-	//Allocate memory for weights and biases
+	//Allocate memory for input data
 	int**  raw_input_data = new int* [SIZE_DATASET]; for (uint32_t i = 0; i < SIZE_DATASET; i++) { raw_input_data[i] = new int[3]; }
 	double* y = new double[SIZE_DATASET];
 	double *results = new double[SIZE_DATASET];
@@ -62,7 +62,7 @@ int main()
 				for(int i = 0; i < 3; i++)
 				{
 					std::getline(lineStream, cell, ',');
-					converted_input_data[j][i] = (std::stod(cell));
+					raw_input_data[j][i] = (std::stoi(cell));
 
 				}
 				std::getline(lineStream, cell, ',');
@@ -81,10 +81,19 @@ int main()
 
 
 	initialize_weights(NUM_OF_INPUTS, NUM_OF_HID1_NODES, W1, b1);
+	for(int i=0; i < NUM_OF_HID1_NODES; i++)
+	{
+		for(int j=0; j < NUM_OF_INPUTS; j++)
+		{
+			std::cout << W1[i][j] << "\t";
+		}
+		std::cout << b1[i] << "\n";
+
+	} 
 	initialize_weights(NUM_OF_HID1_NODES, NUM_OF_HID2_NODES, W2, b2);
 	initialize_weights(NUM_OF_HID2_NODES, NUM_OF_OUTPUTS, W3, b3);
 
-	//normalization_2d(raw_input_data, converted_input_data);
+	normalization_2d(raw_input_data, converted_input_data);
 
 
 	for (uint32_t i = 0; i < EPOCHS; i++)
@@ -104,11 +113,6 @@ int main()
 			double &result = results[j];
 			forward_propagation(input_line, result, W1, W2, W3, b1, b2, b3, hidden1, hidden2);
 
-			//std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
-
-			//double cost_function = pow(y[j] - results[j], 2);
-			//std::cout << cost_function << std::endl;
-
 
 			double& y_1 = y[j];
 			backpropagation(y_1, input_line, result, W1, W2, W3, b1, b2, b3, hidden1, hidden2);
@@ -118,7 +122,7 @@ int main()
 			delete[] input_line;
 		}
 
-
+		//Mean Squared Error(MSE) Cost Function
 		std::cout << "\n\033[38;5;164mCost function:\033[0m" << "\t";
 		double sum = 0;
 		for(int i =0; i < SIZE_DATASET; i++)
@@ -141,7 +145,7 @@ int main()
 
 	delete[] y;
 	delete[] results;
-
+	
 	// Deallocate memory for weights and biases
 
 	for (uint32_t i = 0; i < NUM_OF_HID1_NODES; i++) { delete[] W1[i]; }

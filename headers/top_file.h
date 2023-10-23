@@ -1,14 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include <random>
+#include <ctime>
+#include <cmath>
 #include <string>
 #include <sstream>
 #include <stdlib.h>
 #include <filesystem>
 
 #define SIZE_DATASET 500
-#define EPOCHS 500
-#define LEARNING_RATE 0.0001
+#define EPOCHS 50
+#define LEARNING_RATE 0.001
 
 #define NUM_OF_INPUTS 3
 #define NUM_OF_HID1_NODES 5
