@@ -1,42 +1,30 @@
 #include "../headers/top_file.h"
 
-void normalization_2d(int **input_data, double **output_data)
-{
-    int max;
-    int min;
-    for (int i = 0; i < 3; i++) {
-        max = find_max(input_data, i);
-        min = find_min(input_data, i);
+void normalization_2d(std::vector<std::vector<int>>& input_data, std::vector<std::vector<double>>& output_data) {
+    for (size_t i = 0; i < input_data[0].size(); ++i) {
+        int max = find_max(input_data, i);
+        int min = find_min(input_data, i);
 
-        for (int j = 0; j < SIZE_DATASET; j++) {
-
-            output_data[j][i] = ((double) input_data[j][i]-min) / (max - min);
+        for (size_t j = 0; j < input_data.size(); ++j) {
+            output_data[j][i] = static_cast<double>(input_data[j][i] - min) / (max - min);
         }
     }
 }
 
-int find_max(int ** input_data, int j)
-{
+int find_max(std::vector<std::vector<int>> input_data, size_t j) {
     int max = -9999999;
-    for(int i=0; i < SIZE_DATASET; i++)
-    {
-	    if(max < input_data[i][j])
-	    {
+    for (size_t i = 0; i < input_data.size(); ++i) {
+        if (max < input_data[i][j]) {
             max = input_data[i][j];
-	    }
+        }
     }
     return max;
 }
 
-
-
-int find_min(int **input_data, int j)
-{
+int find_min(std::vector<std::vector<int>> input_data, size_t j) {
     int min = 9999999;
-    for (int i = 0; i < SIZE_DATASET; i++)
-    {
-        if (min > input_data[i][j])
-        {
+    for (size_t i = 0; i < input_data.size(); ++i) {
+        if (min > input_data[i][j]) {
             min = input_data[i][j];
         }
     }
